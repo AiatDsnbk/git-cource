@@ -1,0 +1,74 @@
+#https://www.inform.kz/ru/archive/1?date=17.06.2021
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+import psycopg2
+from psycopg2 import Error
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+b = 0
+for a in range(1, 15, 1):
+    
+    page = urllib.request.urlopen("https://www.inform.kz/ru/archive/" + str(a) + "?date=17.06.2021")
+    soup = BeautifulSoup(page)
+
+    h = soup.find_all('div', {'class': 'lenta_news_block'})
+    for h1 in h:
+        b += 1
+        date = h1.find('div', {'class': 'lenta_news_time-rubric'}).text
+        d = re.findall('\d+', date)
+        date_time = d[0]+'.'+d[1]+'.'+d[2]+' '+d[3]+':'+d[4]
+        if re.search(xx, date):
+            href = h1.find('a', {'class': 'lenta_news_img'}).get('href')
+            post = "https://www.inform.kz" + href
+            page = urllib.request.urlopen(post)
+            soup = BeautifulSoup(page)
+
+            t = soup.find('div', {'class': 'article_news_body'})
+            text = soup.find('div', {'class': 'article_title'}).text + "\n"
+            t1 = t.find_all('p', {'class': ''})
+            for t2 in t1:
+                text = text + t2.text
+        #         print(date + "\n" + post + "\n" + text + "\n")
+
+        try:
+            connection = psycopg2.connect(user="tester",
+                                          password="postgres",
+                                          host="127.0.0.1",
+                                          port="5432",
+                                          database="testdb")
+
+            cursor = connection.cursor()
+            # Executing a SQL query to insert data into  table
+            insert_query = """INSERT INTO site3 (ID, TITLE_HREF, DATE_TIME, WHOLE_TEXT) VALUES (%s, %s, %s, %s)"""
+            values = (b, post, date_time, text)
+            cursor.execute(insert_query, values)
+            connection.commit()
+            print("1 Record inserted successfully")
+            # Deleting duplicates from table
+            delete_query = """DELETE FROM site3 a USING site3 b WHERE a.id < b.id AND a.TITLE_HREF = b.TITLE_HREF;"""
+            cursor.execute(delete_query)
+            connection.commit()
+            print("2 Duplicates deleted successfully")
+            # Fetch result
+            cursor.execute("SELECT * from site2")
+            record = cursor.fetchall()
+            print("Result ", record)
+            # Order by id
+            orderby_id = """SELECT * FROM site3 ORDER BY id;"""
+            cursor.execute(orderby_id)
+            connection.commit()
+            print("3 Ordered by ID successfully")
+
+        except (Exception, psycopg2.Error) as error:
+            print("Error while connecting to PostgreSQL", error)
+        finally:
+            if connection:
+                cursor.close()
+                connection.close()
+                print("PostgreSQL connection is closed")
