@@ -2,4 +2,4 @@
 
 Crash cource for Git
 Git and GitHub
-hey
+cources for coding or programming
