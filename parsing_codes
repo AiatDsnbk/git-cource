@@ -1,0 +1,288 @@
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx=date_while.strftime('%Y-%m-%d')
+
+page = urllib.request.urlopen("https://www.znak.com/all/")
+soup = BeautifulSoup(page)
+
+h = soup.find_all('a', {'class': 'pub'})
+for h1 in h:
+     if re.split('/',h1.get('href'))[1] == xx:
+        post = "https://www.znak.com"+h1.get('href')
+        page = urllib.request.urlopen(post)
+        soup = BeautifulSoup(page)
+        t = soup.find('article', {'class': ''})
+        text = soup.find('section', {'class': 'header'}).text+"\n"
+        t1 = t.find_all('p', {'class': ''})
+        for t2 in t1:
+            text = text+t2.text
+        try:
+            img = soup.find('div', {'class': 'firstimgcover'}).get("data-downloadurl")
+        except:
+            img = None
+        date = soup.find('time').get('datetime')
+        d = re.findall('\d+', date)
+        date_time = d[0]+'-'+d[1]+'-'+d[2]+' '+d[3]+':'+d[4]+':'+d[5]+'.0'
+        print(text)
+        
+#https://time.kz/
+#https://www.inform.kz/ru
+#https://tvrain.ru/
+2)
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+for a in range(1, 15, 1):
+    page = urllib.request.urlopen("https://www.inform.kz/ru/archive/" + str(a) + "?date=10.06.2021")
+    soup = BeautifulSoup(page)
+
+    h = soup.find_all('div', {'class': 'lenta_news_block'})
+    for h1 in h:
+        date = h1.find('div', {'class': 'lenta_news_time-rubric'}).text
+        if re.search(xx, date):
+            href = h1.find('a', {'class': 'lenta_news_img'}).get('href')
+            post = "https://www.inform.kz" + href
+            page = urllib.request.urlopen(post)
+            soup = BeautifulSoup(page)
+
+            t = soup.find('div', {'class': 'article_news_body'})
+            text = soup.find('div', {'class': 'article_title'}).text + "\n"
+            t1 = t.find_all('p', {'class': ''})
+            for t2 in t1:
+                text = text + t2.text
+            print(date + "\n" + text + "\n")
+3)
+      import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib.request.urlopen("https://time.kz/news")
+soup = BeautifulSoup(page)
+
+h = soup.find_all('div', {'class': 'row mb-2'})
+for h1 in h:
+    date = h1.find('date', {'class': 'text-muted text_alt'}).text
+    if re.search('Сегодня', date):
+        print(xx, end = " ")
+    else:
+        print(date, end = " ")
+    href = h1.find('a').get('href')
+    post = "https://time.kz" + href
+    page = urllib.request.urlopen(post)
+    soup = BeautifulSoup(page)
+
+    t = soup.find('div', {'class': 'row mb-5'})
+    text = soup.find('h1', {'class': 'post__title'}).text
+    t1 = t.find_all('p', {'class': ''})
+    for t2 in t1:
+        text = text + t2.text
+
+    time = soup.find('date', {'class': 'article__date'}).text
+    d = re.findall('\d+', time)
+    dtime = d[1]+':'+d[2] + "\n"
+    print(dtime + text + "\n")     
+4)
+ import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib.request.urlopen("https://tvrain.ru/news/")
+soup = BeautifulSoup(page)
+
+h = soup.find_all('div', {'class': 'newsline_tile__head'})
+for h1 in h:
+    date = soup.find('div', {'class': 'newsline_date__time'})
+    
+    href = h1.find('a').get('href')
+    post = "https://tvrain.ru" + href
+    page = urllib.request.urlopen(post)
+    soup = BeautifulSoup(page)
+
+    t = soup.find('div', {'id': 'article_content_text'})
+    text = soup.find('div', {'class': 'document-head__title'}).text
+    t1 = t.find_all('p', {'class': ''})
+    for t2 in t1:
+        text = text + t2.text
+
+    time = soup.find('span', {'class': 'document-head__date'}).text
+    d = re.findall('\d+', time)
+    dtime = d[0] + " " + d[1]+':'+d[2]
+    print(dtime + text + "\n")
+5)
+import urllib.request
+import urllib.request as urllib2
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib2.build_opener()
+page.addheaders = [('User', 'Mozilla/89.0')]
+page1 = page.open("https://www.open.kg/")
+soup = BeautifulSoup(page1)
+
+h = soup.find_all('header', {'class': 'entry-header'})
+for h1 in h:
+    href = h1.find('a').get('href')
+    page = urllib2.build_opener()
+    page.addheaders = [('User', 'Mozilla/89.0')]
+    page1 = page.open(href)
+    soup = BeautifulSoup(page1)
+    
+    date = h1.find('time').text   #date 
+    
+    whole_text = soup.find_all('div', {'class': 'entry-content'})   #whole text
+    title = soup.find('h1', {'class': 'entry-title'}).text   #title
+    print(date + "\n" + title)
+6)
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib2.build_opener()
+page.addheaders = [('User', 'Mozilla/89.0')]
+page1 = page.open("https://www.levada.ru")
+soup = BeautifulSoup(page1)
+
+h = soup.find_all('li', {'class': 'acf-rpw-li acf-rpw-clearfix'})
+for h1 in h:
+    href = h1.find('a').get('href')
+    page = urllib2.build_opener()
+    page.addheaders = [('User', 'Mozilla/89.0')]
+    page1 = page.open(href)
+    soup = BeautifulSoup(page1)
+    
+    t = soup.find('div', {'class': 'entry-content'})
+    text = soup.find('h2', {'': ''}).text + "\n"
+    t1 = t.find_all('p', {'class': ''})
+    for t2 in t1:
+        text = text + t2.text
+            
+    date = soup.find('time').get('datetime')
+    d = re.findall('\d+', date)
+    date_time = d[0]+'-'+d[1]+'-'+d[2]+' '+d[3]+':'+d[4]
+    print(date_time  + "\t" + text + "\n")
+7)
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('.%m.%Y')
+
+for a in range(1, 15, 1):
+    page = urllib2.build_opener()
+    page.addheaders = [('User', 'Mozilla/89.0')]
+    page1 = page.open("https://www.levada.ru/category/news/page/" + str(a) + "/")
+    soup = BeautifulSoup(page1)
+
+    h = soup.find_all('article', {'': ''})
+    for h1 in h:
+        href = h1.find('a').get('href')
+        page = urllib2.build_opener()
+        page.addheaders = [('User', 'Mozilla/89.0')]
+        page1 = page.open(href)
+        soup = BeautifulSoup(page1)
+
+        t = soup.find('div', {'class': 'entry-content'})
+        text = soup.find('h2', {'': ''}).text + "\n"
+        t1 = t.find_all('p', {'class': ''})
+        for t2 in t1:
+            text = text + t2.text
+        date = h1.find('div', {'class': 'entry-meta'}).text
+        date = soup.find('time').get('datetime')
+        d = re.findall('\d+', date)
+        date_time = d[0]+'-'+d[1]+'-'+d[2]+' '+d[3]+':'+d[4]
+        print(date_time + "\n" + text + "\n")
+8)
+#https://kapital.kz/news
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib.request.urlopen("https://kapital.kz/news")
+soup = BeautifulSoup(page)
+
+h = soup.find_all('a', {'class': 'main-news__name'})
+for h1 in h:
+    post = "https://kapital.kz/" + h1.get('href')
+    page = urllib.request.urlopen(post)
+    soup = BeautifulSoup(page)
+        
+    t = soup.find('div', {'class': 'article__body'})
+    text = soup.find('h1').text + "\n" + soup.find('h2').text + "\n"
+    t1 = t.find_all('p', {'class': ''})
+    for t2 in t1:
+        text = text + t2.text
+            
+    date = soup.find('time').get('datetime')
+    d = re.findall('\d+', date)
+    date_time = d[0]+'-'+d[1]+'-'+d[2]+' '+d[3]+':'+d[4]
+    print(date_time + "\n" + text + "\n")
+9)
+#https://kapital.kz/news
+import urllib.request
+from bs4 import BeautifulSoup
+import re
+import requests
+from datetime import date, timedelta
+
+date_while = date.today()
+xx = date_while.strftime('%d.%m.%Y')
+
+page = urllib.request.urlopen("https://kapital.kz/news")
+soup = BeautifulSoup(page)
+
+h = soup.find_all('a', {'class': 'main-news__name'})
+for h1 in h:
+     if re.search(xx, soup.find('time').text):
+        post = "https://kapital.kz/" + h1.get('href')
+        page = urllib.request.urlopen(post)
+        soup = BeautifulSoup(page)
+
+        t = soup.find('div', {'class': 'article__body'})
+        text = soup.find('h1').text + "\n" + soup.find('h2').text + "\n"
+        t1 = t.find_all('p', {'class': ''})
+        for t2 in t1:
+            text = text + t2.text
+
+        date = soup.find('time').get('datetime')
+        d = re.findall('\d+', date)
+        date_time = d[0]+'-'+d[1]+'-'+d[2]+' '+d[3]+':'+d[4]
+        print(date_time + "\n" + text + "\n")
