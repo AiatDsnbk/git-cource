@@ -1,2 +1,1 @@
-import bs4
-import psycopg2
+print("Let's go to Korea.")
