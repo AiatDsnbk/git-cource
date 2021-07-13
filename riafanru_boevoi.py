@@ -25,6 +25,8 @@ def converter(url):
     object_id = object_id.replace('-','')[:250]
     return object_id
 
+telegram_bot_sendtext('starts riafanru')
+
 try:
     url1 = 'https://riafan.ru/news'
     page = requests.get(url1)
