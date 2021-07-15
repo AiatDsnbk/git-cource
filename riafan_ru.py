@@ -105,7 +105,7 @@ try:
             cursor.close()
             con.close()
             q = q + 1
-    send_text = "Парсинг сайта riafan.ru успешно прошло, добавлено " + str(q) + " публикации. Благодарю."
+    send_text = "Парсинг сайта riafan.ru прошел успешно, добавлено " + str(q) + " публикации. Благодарю."
     telegram_bot_sendtext(send_text)   #Сообщение отправлено в телеграмм бот
 except (Exception, db.Error) as error:
     send_text = "Ошибка при парсинге сайта riafan.ru " + "\n" + str(error)

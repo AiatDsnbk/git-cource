@@ -118,7 +118,7 @@ try:
                 con.close()
                 q = q + 1
         #"Парсинг riafan.ru прошел успешно.(time.kz)" 
-    send_text = "Парсинг сайта bbc.com успешно прошло, добавлено " + str(q) + " публикации. Благодарю."
+    send_text = "Парсинг сайта bbc.com прошел успешно, добавлено " + str(q) + " публикации. Благодарю."
     telegram_bot_sendtext(send_text)   #Сообщение отправлено в телеграмм бот
     
 except Exception as error:

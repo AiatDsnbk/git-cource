@@ -107,7 +107,7 @@ try:
             con.close()
             q = q + 1
     #"Парсинг riafan.ru прошел успешно.(time.kz)" 
-    send_text = "Парсинг сайта riafan.ru успешно прошло, добавлено " + str(q) + " публикации. Благодарю."
+    send_text = "Парсинг сайта riafan.ru прошел успешно, добавлено " + str(q) + " публикации. Благодарю."
     telegram_bot_sendtext(send_text)   #Сообщение отправлено в телеграмм бот
     #print(send_text)
 except (Exception, psycopg2.Error) as error:
