@@ -79,10 +79,10 @@ try:
         
         connection_text = """DATABASE=PRODDB;HOSTNAME=192.168.252.11;PORT=50000;
         PROTOCOL=TCPIP;UID=db2inst1;PWD=Qjuehnghj1;"""
-        select_query = """SELECT url_channel FROM TL_MEDIA_DATA_NEWS WHERE source_id = '9370'"""
+        sql_1_test = "SELECT url_channel FROM TL_MEDIA_DATA_NEWS_TEST WHERE source_id = '700'"
         con = db.connect(connection_text, "", "")
         cursor = con.cursor()
-        cursor.execute(select_query)
+        cursor.execute(sql_1_test)
         t = cursor.fetchall()
         con.commit()
         cursor.close()
@@ -97,10 +97,10 @@ try:
             PORT=50000;PROTOCOL=TCPIP;UID=db2inst1;PWD=Qjuehnghj1;"""
             con = db.connect(connection_text, "", "")
             cursor = con.cursor()
-            insert_query = """insert into TL_MEDIA_DATA_NEWS (object_id, published_date, channel_id, 
+            insert_query = """insert into TL_MEDIA_DATA_NEWS_TEST (object_id, published_date, channel_id, 
             likes, comments, views, reposts, caption, text, url_attachment, url_channel, source_id) 
             values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
-            cursor.execute(insert_query, (object_id, date, None, None, None, views, None, None, text, url_attachment, URL, 9370))
+            cursor.execute(insert_query, (object_id, date, None, None, None, views, None, None, text, url_attachment, URL, 700))
             con.commit()
             cursor.close()
             con.close()
